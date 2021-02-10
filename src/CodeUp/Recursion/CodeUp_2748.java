@@ -30,14 +30,15 @@ public class CodeUp_2748 { // µ¡¼À, »¬¼ÀÀ¸·Î n¸¸µé±â
 		if(sum == M) {
 			System.out.println("sum == M " + sum);
 			return 1;
-		}else if(start >= N) return 0;
+		}else if(start >= N) { System.out.println("start >= N " + sum + " " + start);
+			return 0;
+		}
 		else {
 			for(int i=start; i<N; i++) {
-				System.out.println("start " + start + " sum " + sum);
-				result += findZero(sum + list[i], i+1);
-				System.out.println(sum - (-list[i]) + " Ã¹ ½ÇÇà " + list[i]);
-				System.out.println(sum - (-list[i]));
-				result += findZero(sum - (-list[i]), i+1); // ¸¶ÀÌ³Ê½º °æ¿ì
+				System.out.println("sum " + sum + " start " + start);
+				result += findZero(sum + list[i], i+1);		
+				System.out.println("¤·¤µ¤·");
+				result += findZero(sum - list[i], i+1); // ¸¶ÀÌ³Ê½º °æ¿ì
 			}
 		}
 		return result;

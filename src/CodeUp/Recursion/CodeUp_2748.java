@@ -16,6 +16,7 @@ public class CodeUp_2748 { // µ°º¿, ª¨º¿¿∏∑Œ n∏∏µÈ±‚
 			System.out.println(0);
 			return;
 		}
+		
 		String strSplit[] = br.readLine().split("\\s");
 		
 		list = new int[N];

@@ -10,31 +10,15 @@ public class NotFinishPlayer { // 완주 하지 못한 선수
 	}
 	
     public String solution(String[] participant, String[] completion) {
-        String answer = "";
         Arrays.sort(participant);
         Arrays.sort(completion);
         
-        LinkedList<String> list = new LinkedList<String>();
-        for(int i=0; i<completion.length; i++) {
-        	list.add(completion[i]);
+        int i = 0;
+        for(i=0; i<completion.length; i++) {
+        	if(!completion[i].equals(participant[i])) return participant[i];
         }
         
-        for(int i=0; i<participant.length; i++) {
-        	String player = participant[i];
-        	
-        	boolean check = false;
-        	for(int j=0; j<list.size(); j++) {
-        		if(list.get(j).equals(player)) {
-        			list.remove(j);
-        			check = true;
-                    break;
-        		}
-        	}
-        	
-        	if(check == false) return answer = player;
-        }
-        
-        return answer;
+        return participant[i];
     }
 
 }

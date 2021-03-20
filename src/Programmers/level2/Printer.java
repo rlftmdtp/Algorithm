@@ -21,23 +21,20 @@ public class Printer {
         int count = 1;
         
         while(!q.isEmpty()) {
-        	int size = q.size();
-        	Print topP = q.peek();
-        	for(int i=0; i<size; i++) {
-        		Print p = q.poll();
-        		if(p.priority <= topP.priority) q.add(p);
-        		else {
-        			if(p.index == location) return count;
-        			count++;
-        			break;
-        		}
+        	Print topP = q.poll();
+        	boolean flag = false;
+        	for(Print p : q) {
+        		if(topP.priority < p.priority) flag = true;
         	}
-        	// 한바퀴 전수 검사 더 큰 중요도가 없을 시
-        	Print p = q.peek();
-        	if(p.index == location) return count;
-        	count ++;
+        	
+        	// 중간에 우선순위 더 높은 값이 존재 할 시 그냥 뒤로 보낸다
+        	if(flag) {
+        		q.add(topP);
+        	}else { // 맨 앞이 우선순위가 높을 경우
+        		if(topP.index == location) return count;
+        		count++;
+        	}
         }
-        
         return -1;
     }
 }

@@ -6,7 +6,7 @@ public class NotFinishPlayer { // 완주 하지 못한 선수
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 	}
 	
     public String solution(String[] participant, String[] completion) {

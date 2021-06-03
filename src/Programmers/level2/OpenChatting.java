@@ -34,11 +34,11 @@ public class OpenChatting {
         	// 0 1 2
         	switch (splitRecord[0]) {
 			case "Enter": {
-				list.add(hm.get(splitRecord[1]) + "님이 들어왔습니다");
+				list.add(hm.get(splitRecord[1]) + "님이 들어왔습니다.");
 				break;
 			}
 			case "Leave": {
-				list.add(hm.get(splitRecord[1]) + "님이 나갔습니다");
+				list.add(hm.get(splitRecord[1]) + "님이 나갔습니다.");
 				break;
 			}
 		    }

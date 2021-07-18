@@ -7,7 +7,7 @@ public class Internal {
         for(int i=0; i<a.length; i++){
             answer += a[i]*b[i];
         }
-        
+        Integer.toString(i)
         return answer;
     }
 }

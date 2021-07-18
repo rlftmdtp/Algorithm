@@ -16,7 +16,7 @@ public class FailureRate {
         // 실패율 스테이지에 도달했으나 아직 클리어 하지 못한 플레이서 수/스테이지 도달한 수
         // 실패율이 높은 스테이지부터 내림차순으로 (실패율이 같아면 작은번호 스테이지부터)
         //N+1은 올스테이지 클리어
-
+        
         Stage stageArray[] = new Stage[N];
         for(int i=0; i<N; i++){
             
@@ -26,15 +26,29 @@ public class FailureRate {
                 if(i+1 == stages[j]) going++;
                 if(i+1 <= stages[j]) clear++;
             }
-            float failurRate = 0; // 제한사항 : 스테이지에 모두가 도달하지 못했을 경우 0/0이므로 강제0 처리
-            if(!(going == 0 && clear == 0)) failurRate = going/clear;
-           
-            stageArray[i] = new Stage(failurRate, i+1);
+            System.out.println("실패율 " + going  + "/" + clear);
+            System.out.println(going/clear);
+            stageArray[i] = new Stage(going%clear, i+1);
         }
-        
-        Arrays.sort(stageArray);
-        
+        Arrays.sort(stageArray, new Comparator<Stage>() {
+
+			@Override
+			public int compare(Stage o1, Stage o2) {
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				if(o2.failur eRate > o1.failureRate) return 1;
+				else if(o2.failureRate == o1.failureRate) {
+					// 더 작은 스테이지
+					if(o2.stage > o1.stage) return -1;
+					else return 1;
+				}else {
+					return -1;
+				}
+			}
+		});
+
         for(int i=0; i<stageArray.length; i++) {
+        	System.out.println(stageArray[i].stage);
         	answer[i] = stageArray[i].stage;
         }
         return answer;
@@ -42,7 +56,7 @@ public class FailureRate {
 
 }
 
-class Stage implements Comparable<Stage>{
+class Stage {
 	float failureRate;
 	int stage;
 	
@@ -51,18 +65,18 @@ class Stage implements Comparable<Stage>{
 		this.stage = stage;
 	}
 
-	@Override
-	public int compareTo(Stage o) {
-		// TODO Auto-generated method stub
-		if(o.failureRate > this.failureRate) return 1;
-		else if(o.failureRate == this.failureRate) {
-			// 더 작은 스테이지
-			if(o.stage > this.stage) return -1;
-			else return 1;
-		}else {
-			return -1;
-		}
-	}
+//	@Override
+//	public int compareTo(Stage o) {
+//		// TODO Auto-generated method stub
+//		if(o.failureRate > this.failureRate) return 1;
+//		else if(o.failureRate == this.failureRate) {
+//			// 더 작은 스테이지
+//			if(o.stage > this.stage) return -1;
+//			else return 1;
+//		}else {
+//			return -1;
+//		}
+//	}
 
 	
 }

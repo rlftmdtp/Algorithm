@@ -2,7 +2,7 @@ package CodeUp.Basic;
 
 import java.io.*;
 
-public class CodeUp_4041 { // 숫자 다르기
+public class CodeUp_4041 { // 숫자 다루기
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub

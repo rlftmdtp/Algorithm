@@ -20,7 +20,6 @@ public class LeastCommonMultiple {
         boolean go = true;
         while(go) {
         	answer = maxN * count;
-        	System.out.println("maxN " + answer);
         	for(int i=0; i<arr.length-1; i++) { // 자기자신 제외
         		if(answer % arr[i] != 0) break;
         		if(i == arr.length-2) go = false;

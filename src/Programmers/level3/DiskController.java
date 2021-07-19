@@ -31,7 +31,7 @@ public class DiskController {
 
 			@Override
 			public int compare(JOB o1, JOB o2) {
-				// TODO Auto-generated method stub
+				// TODO Auto-generated method stu
 				return o1.start - o2.start;
 			}
 		});
@@ -43,7 +43,7 @@ public class DiskController {
         	else {
         		while(!pq.isEmpty()) {
         			JOB job = pq.poll();
-        			System.out.println(" 점검 " + job.start + "  " + job.runTime);
+        			//System.out.println(" 점검 " + job.start + "  " + job.runTime);
         			endTime += job.runTime;
         			average += endTime - job.start;
         		}
@@ -54,7 +54,7 @@ public class DiskController {
         // 나머지 처리
 		while(!pq.isEmpty()) {
 			JOB job = pq.poll();
-			System.out.println(" 점검 " + job.start + "  " + job.runTime);
+			//System.out.println(" 점검 " + job.start + "  " + job.runTime);
 			endTime += job.runTime;
 			average += endTime - job.start;
 		}
@@ -77,13 +77,7 @@ class JOB implements Comparable<JOB>{
 	
 	@Override
 	public int compareTo(JOB o) {
-		// TODO Auto-generated method stub
-		
-		if(this.gapTime == o.gapTime) {
-			// 시간 격차가 동일할 때 start 시간이 더 적은것을 반환
-			return this.start - o.start;
-		}
-		
+		// TODO Auto-generated method stub		
 		return this.gapTime - o.gapTime;
 	}	
 }

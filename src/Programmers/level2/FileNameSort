@@ -1,0 +1,88 @@
+package Programmers.level2;
+
+import java.util.*;
+import java.util.regex.*;
+
+public class FileNameSort {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String files[] = {"img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG" };
+		solution(files);
+	}
+	
+    public static String[] solution(String[] files) {
+        // HEAD, NUMBER, TAIL
+        // HEAD는 문자로만
+        // NUMBER은 최대 다섯글자의 연속된 숫자 앞쪽에 0이 가능
+        // TAIL 그 나머지 부분 숫자가 다시 나타날수도 ..
+        List<File> list = new ArrayList<>();
+        for(int i=0; i<files.length; i++) {
+        	String file = files[i];
+        	
+        	Pattern p = Pattern.compile("^[a-zA-Z-. ]+");
+        	String head = checkName(p, file);
+        	file = file.replace(head, "");
+        	//System.out.println(file);
+        	
+        	p = Pattern.compile("^[0-9]+");
+        	String number = checkName(p, file);
+
+        	list.add(new File(head.toLowerCase(), Integer.parseInt(number), i, files[i]));
+        }
+        Collections.sort(list);
+        
+        String[] answer = new String[list.size()];
+        for(int i=0; i<list.size(); i++) {
+        	System.out.println(list.get(i).fileName);
+        	answer[i] = list.get(i).fileName;
+        }
+        return answer;
+    }
+
+	private static String checkName(Pattern p, String file) {
+		// TODO Auto-generated method stub
+		String fileName = "";
+		Matcher m = p.matcher(file);
+    	
+		while(m.find()) {
+    		fileName = m.group();
+    	}
+    	return fileName;
+	}
+
+}
+
+class File implements Comparable<File>{
+	String head;
+	int number;
+	//String tail;
+	String fileName;
+	int inputOrder;
+	
+	
+	public File(String head, int number, int inputOrder, String fileName) {
+		super();
+		this.head = head;
+		this.number = number;
+		this.fileName = fileName;
+		this.inputOrder = inputOrder;
+	}
+
+    // 1. HEAD기준으로 사전순 정렬 대소문자 구분 X 
+    // 2. NUMBER의 숫자 순으로 정렬 (앞자리 0은 제외)
+    // 3. 들어온 순서 유지
+	@Override
+	public int compareTo(File o) {
+		// TODO Auto-generated method stub
+		if(this.head.equals(o.head)) { // NUMBER 숫자 순 으로 정렬
+			if(this.number == o.number) {
+				return this.inputOrder - o.inputOrder;
+			}else {
+				return this.number - o.number;
+			}
+		}
+		
+		return this.head.compareTo(o.head);
+	}
+}

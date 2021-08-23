@@ -11,36 +11,38 @@ public class BracketRotation {
 	}
 	
     public static int solution(String s) {
-		int answer = 0;
-
-		for (int i = 0; i < s.length(); i++) {
-			Stack<Integer> st = new Stack<>();
-			for (int j = 0; j < s.length(); j++) {
-				char bracket = s.charAt(j);
-				if (checkBracket(bracket) % 2 == 0) { // 좌측괄호
-					st.push(checkBracket(bracket));
-
-				} else { // 우괄호 각 짝이 맞는지 검사
-					if (!st.isEmpty() && st.peek() == checkBracket(bracket) - 1) { // 짝이 맞을경우
-						st.pop();
-					}else if(st.isEmpty()){ // 우괄호인데 짝이 업을경우는 틀린 문자열이므로 바로 취소
-						st.push(-1);
+		int result = 0;
+		
+		Queue<Character> q = new LinkedList<Character>();
+		for(int i=0; i<s.length(); i++) {
+			q.add(s.charAt(i));
+		}
+		
+		for(int i=0; i<s.length(); i++) {
+			q.add(q.poll());
+			
+			Stack<Character> st = new Stack<Character>();
+			for(char str : q) {
+				// 왼쪽 괄호면 푸쉬
+				if(str == '(' || str == '{' || str == '[') st.push(str);
+				else{ // 오른쪽 괄호면 비교한다
+					if(st.isEmpty()) {
+						st.push('e');
 						break;
+					}
+					else {
+						// 맞는 괄호일 경우 제거
+						if(str == ')' && st.peek() == '(') st.pop();
+						else if(str == '}' && st.peek() == '{') st.pop();
+						else if(str == ']' && st.peek() == '[') st.pop();
 					}
 				}
 			}
-			if(st.isEmpty()) answer ++;
-			s = s.substring(1, s.length()) + s.substring(0,1);
+			
+			if(st.isEmpty()) result++;
 		}
-        return answer;
-    }
-    
-    public static int checkBracket(char ch) {
-    	char chArray[] = {'[', ']', '{', '}', '(', ')' };
-    	for(int i=0; i<chArray.length; i++) {
-    		if(chArray[i] == ch) return i;
-    	}
-    	return -1;
+		System.out.println(result);
+		return result;
     }
 
 }

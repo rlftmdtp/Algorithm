@@ -1,12 +1,13 @@
 package Programmers.level2;
 
 import java.util.*;
+import java.util.regex.*;
 
 public class ExpressMaximum {
-	
-	public static List<String> priorityOper = new ArrayList<>();
-	public static String makeOper = "";
-	public static boolean visited[];
+	public static String operator[];
+	public static String number[];
+	public static List<String> resultOperator = new ArrayList<>();
+	public static boolean visitied[];
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -17,50 +18,68 @@ public class ExpressMaximum {
     public static long solution(String expression) {
         long answer = 0;
         
-        // 연산자 추출
-        HashSet<Character> hs = new HashSet<>();
-        String operatorStr = expression.replaceAll("[0-9]", ""); // 숫자 제거
-        for(int i=0; i<operatorStr.length(); i++) {
-        	hs.add(operatorStr.charAt(i));
+        operator = expression.split("[0-9]+"); // 연산자 추출
+        number = expression.split("[^0-9]+");	// 숫자 추출
+        
+        HashSet<String> hs = new HashSet<>();
+        for(int i=0; i<operator.length; i++) {
+        	hs.add(operator[i]);
         }
         
-        // 연산자로 만들수 있는 순열 생성 nPr
-        List<Character> list = new ArrayList<>();
-        Iterator it =  hs.iterator();
+        // 연산자 생성
+        List<String> operatorList = new ArrayList<>();
+        Iterator it = hs.iterator();
         while(it.hasNext()) {
-        	list.add((Character) it.next());
+        	operatorList.add((String)it.next());
         }
-        visited = new boolean[list.size()];
-        operPerm(list,0);
+
         
-//        for(Character operator : list){
-//        	System.out.println(operator);
-//        }
-        
-        //operPerm(hm);
-        
+        // 연산자 순열 생성
+        visitied = new boolean[operatorList.size()];
+		
+		  perm(operatorList, 0);
+	
         
 
-        return answer;
+       
+        // 연산자 조합 생성
+        //perm();
+        // 가장 큰 금액을 계산해라
+        return -1;
     }
 
-	private static void operPerm(List<Character> list, int depth) {
+	private static void perm(List<String> operatorList, int depth) {
 		// TODO Auto-generated method stub
-		
-		if(depth == list.size()) {
-			System.out.println(makeOper);
-			priorityOper.add(makeOper);
-			makeOper = "";
+		if(depth == operatorList.size()) {
+	        Queue<String> q = new LinkedList<>();
+	        q.add(number[0]); // operator[0] 은 빈공백이므로 생략한다
+	        for(int i=1; i<number.length; i++) {
+	        	q.add(operator[i]);
+	        	q.add(number[i]);
+	        } // 큐 생성
+	        
+			// operatorList에 존재하는 우선순위에 따라 값 계산을 한다
+	        for(int i=0; i<resultOperator.size(); i++) {
+	        	String oper = resultOperator.get(i);
+	        	for(String s : q) {
+	        		System.out.println("z");
+	        		String before = s;
+	        		if(!s.equals(before)) q.add(s);
+	        	}
+	        }
 		}else {
-			for(int i=0; i<list.size(); i++) {
-				if(visited[i] == false) {
-					visited[i] = true;
-					makeOper += list.get(i);
-					operPerm(list, depth+1);
-					visited[i] = false;
+			for(int i=0; i<operatorList.size(); i++) {
+				if(visitied[i] == false) {
+					visitied[i] = true;
+					resultOperator.add(operatorList.get(i));
+					perm(operatorList, depth+1);
+					
+					visitied[i] = false;
+					resultOperator.remove(resultOperator.size()-1);
 				}
 			}
 		}
-		
 	}
+
+
 }

@@ -6,8 +6,10 @@ public class kakao_test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int fees[] = {180, 5000, 10, 600};
-		String records[] = {"16:00 3961 IN", "16:00 0202 IN", "18:00 3961 OUT", "18:00 0202 OUT", "23:58 3961 IN"};
+		// int fees[] = {120, 0, 60, 591};
+		int fees[] = {1, 461, 1, 10};
+		// String records[] = {"16:00 3961 IN", "16:00 0202 IN", "18:00 3961 OUT", "18:00 0202 OUT", "23:58 3961 IN"};
+		String records[] = {"00:00 1234 IN"};
 		
 		List<String> list = new ArrayList<>();
 		list.add("0010");
@@ -22,7 +24,7 @@ public class kakao_test {
 		solution(fees, records);
 	}
 	
-	public static int[] solution(int[] fee, String[] records) {
+	public static int[] solution(int[] fees, String[] records) {
 		
 		TreeMap<String, Car> hm = new TreeMap<>();
 		//  문자열 가공
@@ -43,6 +45,7 @@ public class kakao_test {
 		}
 
 		int result[] = new int[hm.size()];
+		int index = 0;
 		for(String key : hm.keySet()) {
 			System.out.println(" 자동차 번호 " + key);
 			Car car = hm.get(key);
@@ -55,11 +58,30 @@ public class kakao_test {
 			System.out.println("자동차 최종 시간 " + car.totalTime);
 			
 			// 금액 계산
-			calMoney();
+			result[index++] = calMoney(fees, car.totalTime);
 		}
 		
-		
 		return null;
+	}
+	
+	private static int calMoney(int[] feeds, int totalTime) {
+		
+		int resultMoney = 0;
+		int defaultTime = feeds[0];
+		int defaultMoney = feeds[1];
+		int perTime = feeds[2];
+		int perMoney = feeds[3];
+
+		if(defaultTime < totalTime) {
+			int resultTime = totalTime - defaultTime;
+			
+			if(resultTime/perTime == 0) resultMoney = perMoney + defaultMoney;
+			else resultMoney = resultTime/perTime * perMoney + defaultMoney;
+		}else {
+			resultMoney = defaultMoney;
+		}
+		System.out.println(resultMoney);
+		return resultMoney;
 	}
 
 	private static int calTime(String outTime, String inTime) {

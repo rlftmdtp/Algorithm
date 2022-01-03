@@ -15,6 +15,17 @@ public class CodeUp_4746 {
 		int C = Integer.parseInt(strSplit[2]);
 		int D = Integer.parseInt(br.readLine());
 		
+		
+		C = D%60;
+		
+		B = D/60 + B;
+		A = B/60 + A;
+		
+		B = B%60;
+		A = A%24;
+		
+		System.out.println("Á¤´ä : " + A + " " + B + " " + C);
+		
 		int time[] = new int[3];
 		while(true) {
 			if(D>=3600) {

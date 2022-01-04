@@ -5,7 +5,6 @@ import java.util.*;
 
 public class Baekjoon_2667 {
 	public static String MAP[][];
-	public static boolean visitied[][];
 	public static int directX[] = {0, 1, 0, -1};
 	public static int directY[] = {1, 0, -1, 0};
 	
@@ -15,7 +14,6 @@ public class Baekjoon_2667 {
 		int N = Integer.parseInt(br.readLine());
 		
 		MAP = new String[N][N];
-		visitied = new boolean[N][N];
 		for(int i=0; i<N; i++) {
 			String str = br.readLine();
 			for(int j=0; j<N; j++) {
@@ -29,38 +27,56 @@ public class Baekjoon_2667 {
 			for(int j=0; j<N; j++) {
 				
 				if(MAP[i][j].equals("1")) {
-					int result = bfs(i, j);
-					if(result > 1) {
-						count++;
-						System.out.println("result " + result);
-						list.add(result);
-					}
+					count++;
+					list.add(bfs(i, j));
 				}
-
 			}
 		}
 		
 		System.out.println(count);
+		Collections.sort(list);
+		for(int i : list) {
+			System.out.println(i);
+		}
 	}
 	
 	private static int bfs(int x, int y) {
 		// TODO Auto-generated method stub
 		
-		System.out.println("x " + x  + " y " + y + " MAP[x][y] =  "+MAP[x][y]);
+		// System.out.println("x " + x  + " y " + y + " MAP[x][y] =  "+MAP[x][y]);
+		Queue<Pos> q = new LinkedList<>();
+		q.add(new Pos(x, y));
+		MAP[x][y] = "0";
 		int result = 1;
-		MAP[x][y] = "0"; // 방문 표시
 		
-		for(int i=0; i<4; i++) {
-			int newX = x + directX[i];
-			int newY = y + directY[i];
+		while(!q.isEmpty()) {
+			Pos pos = q.poll();
 			
-			
-			if(newX >= 0 && newX < MAP.length && newY >= 0 && newY < MAP.length) { // 범위 확인
+			for(int i=0; i<4; i++) {
+				int newX = pos.x + directX[i];
+				int newY = pos.y + directY[i];
 				
-				if(MAP[newX][newY].equals("1")) result += bfs(newX, newY);
+				if(newX >= 0 && newX < MAP.length && newY >= 0 && newY < MAP.length) { // 범위 확인
+					if(MAP[newX][newY].equals("1")) {
+						MAP[newX][newY] = "0";
+						q.add(new Pos(newX, newY));
+						result++;
+					}
+				}
 			}
 		}
+		
 		return result;
 	}
 
+}
+
+class Pos{
+	int x;
+	int y;
+	
+	public Pos(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 }

@@ -3,7 +3,7 @@ package baekjoon.silver1;
 import java.io.*;
 import java.util.*;
 
-public class Baekjoon_2667 {
+public class Baekjoon_2630 {
 	public static String MAP[][];
 	public static int directX[] = {0, 1, 0, -1};
 	public static int directY[] = {1, 0, -1, 0};

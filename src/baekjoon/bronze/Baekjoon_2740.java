@@ -35,9 +35,9 @@ public class Baekjoon_2740 {
 		// 정답 구하기
 		int result[][] = new int[N][K];
 		for(int i=0; i<A.length; i++) {
-			for(int z=0; z<B[0].length; z++) {
-				for(int j=0; j<A[0].length; j++) {
-					result[i][z] += A[i][j]*B[z][j];
+			for(int j=0; j<B[0].length; j++) {
+				for(int z=0; z<B.length; z++) {
+					result[i][j] += A[i][z] * B[z][j];
 				}
 			}
 		}

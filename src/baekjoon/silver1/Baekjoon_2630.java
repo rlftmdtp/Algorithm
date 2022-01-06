@@ -1,82 +1,55 @@
 package baekjoon.silver1;
 
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Baekjoon_2630 {
-	public static String MAP[][];
-	public static int directX[] = {0, 1, 0, -1};
-	public static int directY[] = {1, 0, -1, 0};
+	public static int MAP[][];
+	public static int WHITE_COUNT;
+	public static int BLUE_COUNT;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
 		int N = Integer.parseInt(br.readLine());
-		
-		MAP = new String[N][N];
+		MAP = new int[N][N];
 		for(int i=0; i<N; i++) {
-			String str = br.readLine();
-			for(int j=0; j<N; j++) {
-				MAP[i][j] = str.charAt(j) + "";
+			String strSplit[] = br.readLine().split(" ");
+			for(int j=0; j<strSplit.length; j++) {
+				MAP[i][j] = Integer.parseInt(strSplit[j]);
 			}
 		}
 		
-		int count = 0;
-		List<Integer> list = new ArrayList<>();
-		for(int i=0; i<N; i++) {
-			for(int j=0; j<N; j++) {
-				
-				if(MAP[i][j].equals("1")) {
-					count++;
-					list.add(bfs(i, j));
-				}
-			}
-		}
 		
-		System.out.println(count);
-		Collections.sort(list);
-		for(int i : list) {
-			System.out.println(i);
-		}
+		search(0, 0, N, N);
+		System.out.println(WHITE_COUNT);
+		System.out.println(BLUE_COUNT);
 	}
 	
-	private static int bfs(int x, int y) {
-		// TODO Auto-generated method stub
+	public static void search(int sx, int sy, int ex, int ey) {
 		
-		// System.out.println("x " + x  + " y " + y + " MAP[x][y] =  "+MAP[x][y]);
-		Queue<Pos> q = new LinkedList<>();
-		q.add(new Pos(x, y));
-		MAP[x][y] = "0";
-		int result = 1;
+		int color  = MAP[sx][sy];
 		
-		while(!q.isEmpty()) {
-			Pos pos = q.poll();
-			
-			for(int i=0; i<4; i++) {
-				int newX = pos.x + directX[i];
-				int newY = pos.y + directY[i];
-				
-				if(newX >= 0 && newX < MAP.length && newY >= 0 && newY < MAP.length) { // 범위 확인
-					if(MAP[newX][newY].equals("1")) {
-						MAP[newX][newY] = "0";
-						q.add(new Pos(newX, newY));
-						result++;
-					}
-				}
+		boolean flag = true;
+		System.out.println("sx " + sx + " sy " + sy + " ex " + ex + " ey " + ey);
+		for(int i=sx; i<ex; i++) {
+			for(int j=sy; j<ey; j++) {
+				System.out.println("i " + i + " j " + j);
+				if(MAP[i][j] != color) flag = false;
 			}
 		}
 		
-		return result;
+		if(flag) {
+			if(color == 0) WHITE_COUNT++;
+			else BLUE_COUNT++;
+		}else {
+			int newN = (ex-sx)/2;
+			search(sx,sy, sx+newN, sy+newN);
+			search(sx, sy+newN, sx+newN, ey);
+			search(sx+newN, sy, ex, sy+newN);
+			search(sx+newN, sy+newN, ex, ey);
+		}
 	}
 
-}
-
-class Pos{
-	int x;
-	int y;
-	
-	public Pos(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
 }

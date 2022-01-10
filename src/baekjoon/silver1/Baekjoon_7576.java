@@ -19,7 +19,7 @@ public class Baekjoon_7576 {
 		MAP = new int[N][M];
 		distance = new int[N][M];
 		for(int i=0; i<N; i++) {
-			Arrays.fill(distance[i], Integer.MAX_VALUE);
+			Arrays.fill(distance[i], -1);
 		}
 
 		
@@ -31,50 +31,53 @@ public class Baekjoon_7576 {
 			}
 		}
 		
-		int result = Integer.MAX_VALUE;
+		Queue<Posi> q = new LinkedList<>();
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<M; j++) {
 				if(MAP[i][j] == 1) {
-					result = Math.min(result, bfs(i,j));
+					q.add(new Posi(i, j));
+					distance[i][j] = 0;
 				}
 			}
 		}
-		
-		
-		System.out.println(result);
+		System.out.println(bfs(q));
 	}
 	
-	public static int bfs(int x, int y) {
-	  	Queue<Posi> q = new LinkedList<>();
-	  	q.add(new Posi(x, y));
-	  	distance[x][y] = 0;
-	  	
-	  	int dis = 0;
+	public static int bfs(Queue<Posi> q) {
+		int result = 0;
 		while (!q.isEmpty()) {
+			System.out.println("q.size() " + q.size());
 			Posi p = q.poll();
-
+			
 			for (int i = 0; i < 4; i++) {
 				int newX = p.x + directX[i];
 				int newY = p.y + directY[i];
 
-				if (newX >= 0 && newX < MAP.length && newY >= 0 && newY < MAP[0].length) {
+				if(newX >= 0 && newX < MAP.length && newY >= 0 && newY < MAP[0].length) {
 					if (MAP[newX][newY] == 0) {
-						if (distance[newX][newY] > distance[p.x][p.y] + 1) {
-							distance[newX][newY] = distance[p.x][p.y] + 1;
-							dis = distance[p.x][p.y] + 1;
-							q.add(new Posi(newX, newY));
-						}
-					}else {
-						distance[newX][newY] = 0;
+						System.out.println(distance[p.x][p.y]);
+						distance[newX][newY] = distance[p.x][p.y] + 1;
+						System.out.println("Å¥¿¡µå");
+						q.add(new Posi(newX, newY));
 					}
+					
+					if(MAP[newX][newY] == -1) distance[newX][newY] = 0;
 				}
-			}
+			}	
 		}
 		
-		return dis;
-	}
+		for(int i=0; i<MAP.length; i++) {
+			for(int j=0; j<MAP[0].length; j++) {
+				System.out.println("distance[i][j]  " + i + " " + j);
+				if(distance[i][j] == -1) return -1;
+				result = Math.max(result, distance[i][j]);
+			}
+		}
+	  
+	  return result;
+   }
 	
-}
+}	
 
 
 

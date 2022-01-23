@@ -9,36 +9,47 @@ public class Kakao2022PrimeSearch {
 		// TODO Auto-generated method stub
 		int n = 437674;
 		int k = 3;
+		
+//		int n = 997244;
+//		int k = 3;
 		solution(n,k);
 
 	}
 
     public static int solution(int n, int k) {
-        int answer = -1;
-        
         // 1. 진수 변환
         String convert_k = convert(n,k);
-        System.out.println(convert_k);
+        // System.out.println(convert_k);
         // 2. 각 상황별 소수 찾기
-        primeCheck(convert_k); // 조건에 성립하는 소수 갯수 반환
-        return answer;
+        return primeCheck(convert_k); // 조건에 성립하는 소수 갯수 반환
     }
     
     public static int primeCheck(String number) {
-//    	0P0처럼 소수 양쪽에 0이 있는 경우
-//    	P0처럼 소수 오른쪽에만 0이 있고 왼쪽에는 아무것도 없는 경우
-//    	0P처럼 소수 왼쪽에만 0이 있고 오른쪽에는 아무것도 없는 경우
-//    	P처럼 소수 양쪽에 아무것도 없는 경우
-    	
+    	int result = 0;
     	// 소수 양쪽 0
-    	Pattern p = Pattern.compile("0[0-9]+0");
+    	Pattern p = Pattern.compile("[^0]+");
     	Matcher m = p.matcher(number);
     	
+    	// int 범위를 넘는 경우 ...?
     	while(m.find()) {
-    		System.out.println(m.group());
+    		String find_prime = m.group();
+    		// System.out.println("찾은 소수 " + find_prime);
+    		if(valid(find_prime)) result++;
     	}
-
-    	return -1;
+    	System.out.println("정답 " + result);
+    	return result;
+    }
+    
+    public static boolean valid(String find_prime) {
+    	// int형을 넘을 수 있음에 주의를 해야한다 ex) int n = 997244  int k = 3
+    	long a = Long.parseLong(find_prime);
+    	// System.out.println("int형 확인 " + a);
+    	if(a == 1) return false;
+    	
+    	for(int i=2; i<a; i++) {
+    		if(a%i == 0) return false;
+    	}
+    	return true;
     }
     
     public static String convert(int n, int k) {

@@ -27,7 +27,7 @@ public class Kakao2022Arrow {
         
         Arrow a = pq.poll();
         // System.out.println("a.gap " + a.gap);
-        if(pq.isEmpty()) {
+        if(pq.isEmpty() || pq.peek().gap == 0) { // 0점은 비기는 경우
         	answer = new int[1];
         	answer[0] = -1;
         }else {
@@ -43,24 +43,15 @@ public class Kakao2022Arrow {
     public static void combi(int[] info, int n, int depth, int lion[]) {
     	if(n == 0) {
     		// 점수 계산
-    		int lion_sum = 0;
-    		int apech_sum = 0;
-    		for(int i=0; i<lion.length; i++) {
-    			if(lion[i] > 0) {
-    				// System.out.println("라이언 점수 획득 " + (10-i));
-    				lion_sum += (10-i);
-    			}
-    			else if(info[i] > 0){
-    				// System.out.println("어피치 점수 획득 " + (10-i));
-    				apech_sum += (10-i);
-    			}
-    		}
-    		// System.out.println("-------------------------------------");
-    		// 라이언이 총합 점수를 어피치를 이겼을 경우에 정답 중 하나도 넣는다
-    		if(lion_sum > apech_sum) {
-    			pq.add(new Arrow(lion_sum - apech_sum, lion.clone()));
-    		}
+    		calGrade(info, lion);
     	}else if(depth == info.length) {
+    		// System.out.println("남아 있는 화살 수 " + n);
+    		if(n>0) {
+    			// 0점에 화살을 맞추는 경우
+    			lion[lion.length - 1] = n;
+    			calGrade(info, lion);
+    			lion[lion.length - 1] = 0;
+    		}
     		return;
     	}else {
     		// 라이언 승
@@ -71,6 +62,26 @@ public class Kakao2022Arrow {
     		// 어피치가 승리하거나 무승부 일 경우
     		combi(info, n, depth+1, lion);
     	}
+    }
+    
+    public static void calGrade(int[] info, int[] lion) {
+		int lion_sum = 0;
+		int apech_sum = 0;
+		for(int i=0; i<lion.length; i++) {
+			if(lion[i] > 0) {
+				// System.out.println("라이언 점수 획득 " + (10-i));
+				lion_sum += (10-i);
+			}
+			else if(info[i] > 0){
+				// System.out.println("어피치 점수 획득 " + (10-i));
+				apech_sum += (10-i);
+			}
+		}
+		//System.out.println("-------------------------------------");
+		// 라이언이 총합 점수를 어피치를 이겼을 경우에 정답 중 하나도 넣는다
+		if(lion_sum >= apech_sum) { // 비기는 경우도 존재 하기 떄문에 = 포함시킨다
+			pq.add(new Arrow(lion_sum - apech_sum, lion.clone()));
+		}
     }
 
 }
@@ -93,7 +104,8 @@ class Arrow implements Comparable<Arrow>{
 		if(this.gap == a.gap) {
 			// 가장 낮은 점수를 더 많이 맞힌 경우를 return
 			for(int i=list.length-1; i>=0; i--) {
-				if(this.list[i] > a.list[i]) return -1;
+				if(this.list[i] == a.list[i]) continue;
+				else return this.list[i] - a.list[i];
 			}
 		}
 		

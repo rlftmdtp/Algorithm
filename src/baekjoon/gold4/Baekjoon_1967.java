@@ -5,6 +5,8 @@ import java.io.*;
 
 public class Baekjoon_1967 {
 	public static boolean visitied[];
+	public static int MAX = 0;
+	public static int INDEX = 0;
 	
 	static class Node{
 		int index;
@@ -22,7 +24,7 @@ public class Baekjoon_1967 {
 		int N = Integer.parseInt(br.readLine());
 		List<Node> graph[] = new ArrayList[N+1];
 		visitied = new boolean[N+1];
-		for(int i=1; i<graph.length; i++) {
+		for(int i=0; i<graph.length; i++) {
 			graph[i] = new ArrayList<>();
 		}
 		
@@ -36,25 +38,31 @@ public class Baekjoon_1967 {
 			graph[child].add(new Node(parent, weight));
 		}
 		
-		dfs(1, graph, 0);
+		dfs(1, graph, 0); // 하나의 정점에서 가장 먼 정점을 찾는다
+		MAX = 0;
+		visitied = new boolean[N+1];
+		dfs(INDEX, graph, 0); // 발견한 가장 먼 점에서 다른 가장 먼점을 찾으면 된다
+		System.out.println(MAX);
 	}
 	
-	public static int dfs(int parent, List<Node> graph[], int w) {
-		System.out.println(parent + " 방문처리 true");
+	public static void dfs(int parent, List<Node> graph[], int w) {
 		visitied[parent] = true;
-		int result = 0;
 		
 		List<Node> list = graph[parent];
 		for(int i=0; i<list.size(); i++) {
 			Node child = list.get(i);
 			// System.out.println("방문 노드 " + child.index);
 			if(visitied[child.index] == false) {
-				System.out.println("방문 노드 " + child.index);
+				// System.out.println("방문 노드 " + child.index);
 				dfs(child.index, graph, w+child.w);
 			}
 		}
-		System.out.println(parent + " 의 가중치 합  " + (result+w));
-		return result + w;
+		
+		if(w > MAX) {
+			MAX = w;
+			// System.out.println("MAX " + MAX);
+			INDEX = parent;
+		}
 	}
 
 }

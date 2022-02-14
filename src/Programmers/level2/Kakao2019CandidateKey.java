@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Kakao2019CandidateKey {
 	public static boolean visitied[];
-	public static List<String> result = new ArrayList<>();
+	public static List<HashSet<Integer>> result = new ArrayList<>();
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String[][] relation = {{"100","ryan","music","2"},{"200","apeach","math","2"},{"300","tube","computer","3"},
@@ -26,10 +26,13 @@ public class Kakao2019CandidateKey {
     public static void combi(String[][] relation, int r, int depth) {
     	if(r == 0) {
     		// 후보키 후보열 선택 완료
-    		List<Integer> candidateKey = new ArrayList<>();
+    		HashSet<Integer> candidateKey = new HashSet<>();
+    		
+    		// 최소성 검사를 위해 HashSet사용 123 후보키라면 12가 포함하고 있는지 검사
     		for(int i=0; i<visitied.length; i++) {
-    			if(visitied[i] == true) {candidateKey.add(i);
-    			System.out.print(i + ", ");
+    			if(visitied[i] == true) {
+    				candidateKey.add(i);
+    				System.out.print(i + ", ");
     			}
     		}
     		System.out.println();
@@ -39,9 +42,8 @@ public class Kakao2019CandidateKey {
 
     		for(int i=0; i<relation.length; i++) {
     			// 뽑힌 열
-    			StringBuilder sb = new StringBuilder();
-    			for(int j=0; j<candidateKey.size(); j++) {
-    				int index = candidateKey.get(j);
+    			StringBuilder sb = new StringBuilder();	
+    			for(int index : candidateKey) {
     				sb.append(relation[i][index]);
     			}
     			System.out.println("sb.toString() " + sb.toString());
@@ -56,19 +58,10 @@ public class Kakao2019CandidateKey {
     		}
     		
     		// 최소성 검사
-    		String key = "";
-    		for(int i=0; i<candidateKey.size(); i++) {
-    			int row = candidateKey.get(i);
-    			key += row;
-    			for(int j=0; j<result.size(); j++) {
-    				String candi = result.get(j); // 여러개 열을 붙인 후보키
-    				for(int z=0; z<candi.length(); z++) {
-    					if(Integer.parseInt(candi.charAt(z) + "") == row) return; // 이미 해당 열이 존재할 경우 후보키 X
-    				}
-    			}
+    		for(HashSet<Integer> hs : result) {
+    			if(candidateKey.containsAll(hs)) return;
     		}
-    		System.out.println("후보키 확정 " + key);
-    		result.add(key);
+    		result.add(candidateKey);
     	}else if(depth == relation[0].length){ return;
     	}else {
     		visitied[depth] = true;

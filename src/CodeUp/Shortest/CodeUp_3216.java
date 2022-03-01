@@ -3,9 +3,10 @@ package CodeUp.Shortest;
 import java.io.*;
 import java.util.*;
 
-public class CodeUp_3215 { // 최단 경로 1
+public class CodeUp_3216 { // 최단 경로 1
 	public static ArrayList<Node> graph[];
 	public static int d[];
+	public static int before[];
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,6 +17,7 @@ public class CodeUp_3215 { // 최단 경로 1
 		int E = Integer.parseInt(strSplit[1]); // 에지개수
 		
 		d = new int[V+1]; // s에서 v까지의 최단거리 기록
+		before = new int[V+1];
 		graph = new ArrayList[V+1];
 		for(int i=1; i<=V; i++) {
 			graph[i] = new ArrayList<Node>();
@@ -37,8 +39,26 @@ public class CodeUp_3215 { // 최단 경로 1
 		int end = strSplit[1].charAt(0) - 64;
 		
 		dijkstra(start); // 출발점으로 부터 각 점의 최단 거리 구하기
+		
 		if(d[end] == Integer.MAX_VALUE) System.out.println(-1);
 		else System.out.println(d[end]);
+		
+		// 경로 출력
+		travers(start, end);
+	}
+	
+	public static void travers(int start, int end) {
+		Stack<Character> st = new Stack<>();
+		st.add((char)(end+64));
+		while(before[end] != 0) {
+			st.add((char)(before[end]+64));
+			end = before[end];
+		}
+		
+		while(!st.isEmpty()) {
+			System.out.println(st.pop());
+		}
+		
 	}
 	
 	private static void dijkstra(int start) {
@@ -46,7 +66,7 @@ public class CodeUp_3215 { // 최단 경로 1
 		// 초기화
 		Arrays.fill(d, Integer.MAX_VALUE);
 		d[start] = 0;
-		
+		before[start] = 0;
  		PriorityQueue<Node> pq = new PriorityQueue<Node>();
 		pq.add(new Node(start, d[start]));
 		
@@ -61,6 +81,7 @@ public class CodeUp_3215 { // 최단 경로 1
 				
 				if(d[n2.v] > n2.distance + n.distance) {
 					d[n2.v] = n2.distance + n.distance;
+					before[n2.v] = n.v; 
 					pq.add(new Node(n2.v, d[n2.v]));
 				}
 			}

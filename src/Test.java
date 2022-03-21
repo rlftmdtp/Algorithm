@@ -2,48 +2,69 @@ import java.util.*;
 import java.util.regex.*;
 
 public class Test {
-	
+	public static int[] list;
 	public static void main(String[] args) {
-	
-	// 최단경로 
-    // https://www.codeup.kr/submitpage.php?id=3215&sid=16885638&rid=
-	// 그래프 문제
-	int V = 5; // 정점이 다섯개
-	List<Integer> graph[] = new ArrayList[V+1]; // 노드개수
-	for(int i=1; i<=V; i++) {
-		graph[i] = new ArrayList<>();
+		solution(18);
 	}
 	
-	// 에지 넣기 양쪽 방향 다 넣어야 한다
-	List<Integer> list = new ArrayList<>();
-	
-	HashMap<Integer, Integer> hm = new HashMap<>();
-	hm.put(null, null);
-	hm.put(null, hm.getOrDefault(hm, 0)+1);
-	for(int key : hm.keySet()) {
-		hm.get(key);
+	public static int[] solution(int n) {
+		
+		list = new int[n];
+		for(int i=0; i<n; i++) {
+			list[i] = i+1;
+		}
+		
+		// 머지소트? log2n
+		
+		// 가장 작은 소수 찾기
+		mergeSort(0, n);
+				
+		return null;
 	}
 	
+	public static void mergeSort(int st, int en) {
+		int mid = (st+en)/2;
+		
+		// len = 1 이라면 과정 종료
+		if(mid != 1) {
+			System.out.println("st " + st + "  en " + en + " mid " + mid);			
+
+			merge(st, en, mid);
+			mergeSort(st, mid);
+			// mergeSort(mid+1, en);
+		}
+	}
+	
+	public static void merge(int st, int en, int mid) {
+		int tmp[] = new int[en];
+
+		for(int i=st; i<en; i++) {
+			System.out.print(list[i] + " ");
+			if(i%2 == 0) tmp[st++] = list[i];
+			else tmp[mid++] = list[i];
+		}
+		System.out.println();
+		
+		for(int i=0; i<tmp.length; i++) {
+			list[i] = tmp[i];
+		}
+		
+		System.out.println("정렬된 결과 ");
+		for(int i=0; i<list.length; i++) {
+			System.out.print(list[i] + " ");
+		}
+		System.out.println();
+		System.out.println();
+	}
+	
+	public static int findPrime(int len) {
+		
+		int st = 2;
+		while(true) {
+			if(len%st == 0) return st;
+			st++;
+		}
 	}
 	
 }
-
-class Node implements Comparable<Node>{
-	int v;
-	int d;
-	
-	public Node(int v, int d) {
-		this.v = v;
-		this.d = d;
-	}
-	
-	@Override
-	public int compareTo(Node o) {
-		// TODO Auto-generated method stub
-		return this.v - o.v;
-		// 오름차순정렬
-	}
-
-}
-
 

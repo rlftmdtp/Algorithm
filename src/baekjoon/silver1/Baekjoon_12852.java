@@ -4,53 +4,44 @@ import java.io.*;
 import java.util.*;
 
 public class Baekjoon_12852 {
-	public static int result = Integer.MAX_VALUE;
-	public static StringBuilder sb;
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
+	public static List<Integer> list = new ArrayList<>();
+	public static int before[];
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub	
+		// String[] purchase = {"2019/01/01 5000", "2019/01/20 15000", "2019/02/09 90000"};
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int x = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
+		before = new int[n+110];
+		dp(n);
 		
-		List<Integer> list = new ArrayList<>();
-		dfs(x, 0, list);
-		System.out.println(result);
-		System.out.println(sb.toString());
-	}
-	
-	public static void dfs(int x, int depth, List<Integer> list) {
-		if(x == 1) {
-			list.add(x);
-			// 길이비교
-			// System.out.println("depth " + depth);
-			if(result > depth) {
-				result = depth;
-				sb = new StringBuilder();
-				for(int i=0; i<list.size(); i++) {
-					// System.out.print(list.get(i) + " ");
-					sb.append(list.get(i) + " ");
-				}
-				sb.append("\n");
-			}
-			// System.out.println();
-			list.remove(list.size()-1);
-		}else {
-			
-			if(x%3 == 0) {
-				list.add(x);
-				dfs(x/3, depth+1, list);
-				list.remove(list.size()-1);
-			}
-			
-			if(x%2 == 0) {
-				list.add(x);
-				dfs(x/2, depth+1, list);
-				list.remove(list.size()-1);
-			}
-			
-			list.add(x);
-			dfs(x-1, depth+1, list);
-			list.remove(list.size()-1);
+		int pre = n;
+		while(true) {
+			System.out.print(pre + " ");
+			if(pre == 1) break;
+			pre = before[pre];
 		}
 	}
+	
+	public static int dp(int n) {
+		if(n <= 3) return 1;
+		
+		int dp[] = new int[n+1];
+		dp[1] = 0;
 
+		for(int i=2; i<=n; i++) {
+			before[i] = i-1;
+			dp[i] = dp[i-1]+1;
+			if(i%2 == 0 && dp[i/2] + 1 < dp[i]) {
+				dp[i] = dp[i/2] + 1;
+				before[i] = i/2;
+			}
+			if(i%3 == 0 && dp[i/3] + 1 < dp[i]) {
+				dp[i] = dp[i/3]+1;
+				before[i] = i/3;
+			}
+		}
+		
+		System.out.println(dp[n]);
+		return dp[n];
+	}
 }

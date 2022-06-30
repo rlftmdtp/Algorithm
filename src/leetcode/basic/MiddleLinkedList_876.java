@@ -10,16 +10,20 @@ public class MiddleLinkedList_876 {
 	}
 	
     public ListNode middleNode(ListNode head) {
-
-    	ListNode root = head;
-    	ListNode pointer = null;
-    	
-    	if(root == null) return new ListNode();
-    	else {
-    		
-    	}
-    	
-    	return null;
+        ListNode root = head;
+        ListNode pointer = head;
+        
+        int len = 0;
+        while(pointer != null){
+            pointer = pointer.next;
+            len++;
+        }
+        
+        for(int i=0; i<len/2; i++){
+            root = root.next;
+        }
+        
+        return root;
     }
 
 }

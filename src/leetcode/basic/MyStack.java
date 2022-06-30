@@ -40,8 +40,8 @@ public class MyStack {
     }
     
     public boolean empty() {
-        if(pointer == -1) return false;
-        else return true;
+        if(pointer == -1) return true;
+        else return false;
     }
 
 }

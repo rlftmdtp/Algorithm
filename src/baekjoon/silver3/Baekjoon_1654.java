@@ -24,11 +24,11 @@ public class Baekjoon_1654 {
 
 	}
 	
-	public static int upperBoundary(int list[], int search) {
+	public static long upperBoundary(int list[], int search) {
 		
-		int start = 0;
-		int end = list[list.length-1];
-		int mid = 0;
+		long start = 0;
+		long end = list[list.length-1];
+		long mid = 0;
 		// 찾고자 하는 것 ? 랜선의 최대 길이
 		// 잘린 랜선의 개수
 		while(start < end) {

@@ -38,11 +38,11 @@ public class Baekjoon_15831 { // 즌표의 조약돌
 			if(en == list.length) break;
 			
 			
-			if(b >= count_b) {
+			if(count_b <= b) {
 				if(list[en].equals("B")) count_b++;
 				else count_w++;
 				en++;	
-			}else { // b == count_b
+			}else { // b > count_b
 				if(list[st].equals("B")) count_b--;
 				else count_w--;
 				st++;

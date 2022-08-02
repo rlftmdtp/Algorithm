@@ -1,6 +1,8 @@
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class StreamPractice {
 
@@ -12,49 +14,37 @@ public class StreamPractice {
 
 		//  취미별 인원 수를 구하라
 		// list.stream().flatMap(member -> member.get(0));
-		
 		HashMap<String, Integer> hm = new HashMap<>();
-		list.stream().map(member -> member.get(1).split(":")).forEach(member -> {
-			for(int i=0; i<member.length; i++) {
-				hm.put(member[i], hm.getOrDefault(member[i], 0)+1);
-				// System.out.print(member[i] + " ");
-			}
-			// System.out.println();
-		});
+		list.stream()
+			.flatMap(inerList -> Arrays.stream(inerList.get(1).split(":")))
+			.forEach(hobby -> hm.merge(hobby, 1, (o,n) -> o++));
+	
 		
 		// 취미별 정씨 성을 갖는 멤버 수를 구하라
 		HashMap<String, Integer> hm2 = new HashMap<>();
-		String test = "정지희";
-		System.out.println(test.matches("^정.."));
-		
-		/*
-		 * Pattern p = Pattern.compile("^정+"); Matcher m = p.matcher(test);
-		 */
-		
-		
-		list.stream().filter(member -> member.get(0).matches("^정+")).map(member -> member.get(1).split(":"))
-			.forEach(member -> {
-				for(int i=0; i<member.length; i++) {
-					hm2.put(member[i], hm.getOrDefault(member[i], 0) + 1);
-				}
-			});
-		
-		hm2.entrySet().forEach(entry -> System.out.println(entry));
+		list.stream()
+			.filter(innerList -> innerList.get(0).startsWith("정"))
+			.flatMap(innerList -> Arrays.stream(innerList.get(1).split(":")))
+			.forEach(hobby -> hm2.merge(hobby, 1, (o,n) -> o++));
+		hm2.keySet().forEach(key -> System.out.println(key + " " + hm2.get(key)));
+
 		
 		// 소개 내용에 '좋아'가 몇 번 등장하는지 구하라
-		Integer count = 0;
-		list.stream().map(member -> member.get(2)).forEach(
-				intro -> {
-					Pattern p = Pattern.compile("좋아*");
-					Matcher m = p.matcher(intro);
-					
-					// 일반 변순느 왜 안되는 거얌??
-					while(m.find()) {
-						count++;
-					}
-				});
+		Optional<Integer> sum = list.stream()
+			.map(innserList -> likeCount(innserList.get(2)))
+			.reduce((x,y) -> x+y);
+		System.out.println(sum);		
+			
+	}
+	
+	public static int likeCount(String str) {
+		Pattern p = Pattern.compile("좋아*");
+		Matcher m = p.matcher(str);
 		
+		int count = 0;
+		while(m.find()) count++;
 		
+		return count;
 	}
 	
 	

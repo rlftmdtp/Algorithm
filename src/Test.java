@@ -1,70 +1,72 @@
 import java.util.*;
 import java.util.regex.*;
+import java.util.stream.Collectors;
+
+import leetcode.basic.MyStack;
+
+import java.io.*;
 
 public class Test {
-	public static int[] list;
+	public static String firtstRow;
 	public static void main(String[] args) {
-		solution(18);
-	}
-	
-	public static int[] solution(int n) {
+		int grade[] = {3,2,3,6,4,5,2};
 		
-		list = new int[n];
-		for(int i=0; i<n; i++) {
-			list[i] = i+1;
-		}
+		// 소수점 버리기
 		
-		// 머지소트? log2n
+		String result = String.format("%.2f", 3.1436);
+		System.out.println(result);
+		// 소수점 올리기
 		
-		// 가장 작은 소수 찾기
-		mergeSort(0, n);
+		
+		int total = 0;
+		int sum = 0;
+		Stack<Integer> st = new Stack<>();
+		for(int i=0; i<grade.length; i++) {
+			int cur = grade[i];
+			total += cur;
+			
+			if(st.isEmpty()) st.push(cur);
+			else {
+				Stack<Integer> temp = new Stack<>();
 				
-		return null;
+				while(st.peek() > cur) {
+					int top = st.pop();
+					int interval = top - cur;
+					sum += interval;
+					temp.push(top - interval);
+					
+					if(st.isEmpty()) break;
+				}
+				
+				// 원복djckvl
+				while(!temp.isEmpty()) {
+					st.push(temp.pop());
+				}
+				st.push(cur);
+			}
+		}
+		
+		// System.out.println(sum);
 	}
 	
-	public static void mergeSort(int st, int en) {
-		int mid = (st+en)/2;
+	public static class Job implements Comparable<Job>{
+		int processId;
+		int jobTime;
+		int arriveTime;
 		
-		// len = 1 이라면 과정 종료
-		if(mid != 1) {
-			System.out.println("st " + st + "  en " + en + " mid " + mid);			
+		public Job(int processId, int jobTime, int arriveTime) {
+			this.processId = processId;
+			this.jobTime = jobTime;
+			this.arriveTime = arriveTime;
+		}
+		
+		public int compareTo(Job j) {
+			if(this.jobTime == j.jobTime) {
+				return this.processId - j.processId;
+			}else return this.jobTime - j.jobTime;
+		}
+	}
 
-			merge(st, en, mid);
-			mergeSort(st, mid);
-			// mergeSort(mid+1, en);
-		}
-	}
-	
-	public static void merge(int st, int en, int mid) {
-		int tmp[] = new int[en];
 
-		for(int i=st; i<en; i++) {
-			System.out.print(list[i] + " ");
-			if(i%2 == 0) tmp[st++] = list[i];
-			else tmp[mid++] = list[i];
-		}
-		System.out.println();
-		
-		for(int i=0; i<tmp.length; i++) {
-			list[i] = tmp[i];
-		}
-		
-		System.out.println("정렬된 결과 ");
-		for(int i=0; i<list.length; i++) {
-			System.out.print(list[i] + " ");
-		}
-		System.out.println();
-		System.out.println();
-	}
-	
-	public static int findPrime(int len) {
-		
-		int st = 2;
-		while(true) {
-			if(len%st == 0) return st;
-			st++;
-		}
-	}
-	
 }
 

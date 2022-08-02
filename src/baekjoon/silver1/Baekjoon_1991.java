@@ -53,6 +53,7 @@ public class Baekjoon_1991 {
 	public static void postOrder(String vertex) {
 		List<String> list = tree.get(vertex);
 		
+
 		if(!list.get(0).equals(".")) postOrder(list.get(0));
 		if(!list.get(1).equals(".")) postOrder(list.get(1));
 		sb.append(vertex);

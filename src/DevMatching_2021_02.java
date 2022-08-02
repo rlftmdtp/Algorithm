@@ -8,6 +8,7 @@ import baekjoon.gold2.Baekjoon_11779.Node;
 public class DevMatching_2021_02 {
 	
 	public static int MAP[][];
+	public static boolean visitied[][][];
 	public static int direct_x[] = {0,1,1,1,0,-1,-1,-1};
 	public static int direct_y[] = {1,1,0,-1,-1,-1,0,1};
 	
@@ -17,15 +18,20 @@ public class DevMatching_2021_02 {
 //		String[] recipies = {"A 3", "B 2"};
 //		String[] orders = {"A 1", "A 2", "B 3", "B 4"};
 		
-		int h = 7;
-		int w = 9;
-		int n  = 4;
-		String board[] = {"111100000", "000010011" , "111100011" , "111110011", "111100011" , "111100010" , "111100000"};
+//		int h = 7;
+//		int w = 9;
+//		int n  = 4;
+//		String board[] = {"111100000", "000010011" , "111100011" , "111110011", "111100011" , "111100010" , "111100000"};
+		int h = 5;
+		int w = 5;
+		int n  = 5;
+		String board[] = {"11111", "11111" , "11111" , "11111", "11111"};
 		solution(h, w, n, board);
 	}
 	
 	public static int solution(int h, int w, int n, String[] borad){
 		
+		visitied = new boolean[h][w][4]; // 4개의 방향
 		MAP = new int[h][w];
 		for(int i=0; i<h; i++) {
 			String str = borad[i];
@@ -58,30 +64,18 @@ public class DevMatching_2021_02 {
 			
 				int new_x = n.x + direct_x[i];
 				int new_y = n.y + direct_y[i];
-				// System.out.println("new_x " + new_x + " new_y " + new_y);
-				if(depth == limit) { // 마지막 돌  확인
-					int reverse_x = x + direct_x[i+4];
-					int reverse_y = y + direct_y[i+4];
-					if(new_x >= 0 && new_x<MAP.length && new_y >=0 && new_y < MAP[0].length &&
-							reverse_x >= 0 && reverse_x<MAP.length && reverse_y >=0 && reverse_y < MAP[0].length) { // 범위 확인
-						if(MAP[new_x][new_y] == 0 && MAP[reverse_x][reverse_y] == 0) { // 양쪽 끝으로 더 있는지 확인해야 한다
-							count++;
-							System.out.println("new_x " + new_x + " new_y " + new_y + " i방향 " + i);
-						}
-					}else {
-						count++;
-						System.out.println("new_x " + new_x + " new_y " + new_y + " i방향 " + i);
-					}
-				}
 				
 				if(new_x >= 0 && new_x<MAP.length && new_y >=0 && new_y < MAP[0].length) { // 범위 확인
-					if(MAP[new_x][new_y] == 1) {
+					if(MAP[new_x][new_y] == 1 && visitied[new_x][new_y][i] == false) {
 						// System.out.println("zz");
+						visitied[new_x][new_y][i] = true;
 						q.add(new Node(new_x, new_y));
 						depth++;
 					}
 				}
 			}
+			
+			if(depth == limit) count++;
 		}
 		System.out.println("X : " + x + " Y " + y + " count= " + count);
 		return count;

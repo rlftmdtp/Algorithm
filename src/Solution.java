@@ -25,12 +25,6 @@ public class Solution {
 			return date.compareTo(l.date);
 		}
 	}
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub	
-		// String[] purchase = {"2019/01/01 5000", "2019/01/20 15000", "2019/02/09 90000"};
-		String[] purchase = {"2019/01/30 5000", "2019/04/05 10000", "2019/06/10 20000", "2019/08/15 50000", "2019/12/01 100000"};
-		solution(purchase);
-	}
 	
 	public static int solution(String[] purchase) {
 		
@@ -90,6 +84,41 @@ public class Solution {
 		ld.plusMonths(30);
 		return ld;
 	}
-
+	
+	public static int[] list = {5,2,4,1,3,6};
+	public static int tmp[];
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub	
+		// String[] purchase = {"2019/01/01 5000", "2019/01/20 15000", "2019/02/09 90000"};
+		tmp = new int[list.length];
+		mergeSort(0, list.length);
+	}
+	
+	public static void mergeSort(int st, int en) {
+		if(st+1 == en) return;
+		
+		int mid = (st+en)/2;
+		mergeSort(st, mid);
+		mergeSort(mid, en);
+		merge(st, en);
+	}
+	
+	public static void merge(int st, int en) {
+		int mid = (st+en)/2;
+		int left = st;
+		int right = mid;
+		System.out.println("merge " + st + " " + en + " " + mid);
+		for(int i=st; i<en; i++) {
+			if(right == en) tmp[i] = list[left++];
+			else if(left == mid) tmp[i] = list[right++];
+			else if(list[left] <= list[right]) tmp[i] = list[left++];
+			else tmp[i] = list[right++];
+		}
+		
+		for(int i=st; i<en; i++) {
+			System.out.print(tmp[i] + " ");
+		}
+		System.out.println();
+	}
 
 }

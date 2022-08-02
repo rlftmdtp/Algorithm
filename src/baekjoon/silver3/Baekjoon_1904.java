@@ -3,7 +3,7 @@ package baekjoon.silver3;
 import java.util.*;
 import java.io.*;
 
-public class Baekjoon_1904 {
+public class Baekjoon_1904 {// 01≈∏¿œ
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub

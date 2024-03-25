@@ -10,7 +10,6 @@ public class DidscountEvent {
 	}
 	
 	public static int solution(String[] want, int[] number, String[] discount) {
-		
 		HashMap<String, Integer> hm = new HashMap<>();
 		for(int i=0; i<want.length; i++) {
 			hm.put(want[i], number[i]);
@@ -24,16 +23,19 @@ public class DidscountEvent {
 			else {
 				boolean result = true;
 				for(int j=0; j<10; j++) {
-					if(temp.containsKey(discount[i+j]) && (temp.get(discount[i+j] != 0))) {
-						temp.put(null, null)
+					if(temp.containsKey(discount[i+j]) && (temp.get(discount[i+j]) != 0)) {
+						temp.put(discount[i+j], temp.get(discount[i+j])-1);
+					}else {
+						result = false;
+						break;
 					}
 				}
+				
+				if(result) answer++;
 			}
 					
 		}
-		
-		
-		return 0;
+		return answer;
 	}
 
 }
